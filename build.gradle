@@ -1,0 +1,51 @@
+plugins {
+    id("groovy") 
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.6.3"
+}
+
+version = "0.1"
+group = "bavobbr"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut.groovy:micronaut-runtime-groovy")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    compileOnly("io.micronaut:micronaut-http-validation")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation("io.micronaut:micronaut-validation")
+
+    implementation('bavobbr:vbapi:1.6')
+    implementation('com.theokanning.openai-gpt3-java:client:0.8.1')
+    implementation group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7'
+
+
+}
+
+
+application {
+    mainClass.set("bavobbr.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("spock2")
+    processing {
+        incremental(true)
+        annotations("bavobbr.*")
+    }
+}
+
+
+
